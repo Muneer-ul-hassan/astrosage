@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exoplanet Discovery Timeline</title>
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <link href="/static/css/custom.css" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <script src="/static/js/plotly_config.js"></script>
+    <script src="/static/js/exoplanet_visualizations.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body data-bs-theme="dark">
+    <div class="container mt-4">
+        <header class="planet-detail-header mb-4">
+            <h1 class="display-4">Exoplanet Discovery Timeline</h1>
+            <p class="lead">Recent discoveries expanding our understanding of worlds beyond our solar system</p>
+        </header>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>
+                            <i data-feather="clock" class="me-1"></i>
+                            Discovery Timeline
+                        </h3>
+                    </div>
+                    <div class="card-body" id="visualization-container">
+                        <!-- Visualizations will be rendered here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>
+                            <i data-feather="list" class="me-1"></i>
+                            Recent Discoveries
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Exoplanet</th>
+                                        <th>Discovery Date</th>
+                                        <th>Discovery Method</th>
+                                        <th>Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="discoveries-table">
+                                    <!-- Table rows will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>
+                            <i data-feather="info" class="me-1"></i>
+                            Discovery Methods
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4>Transit Method</h4>
+                                <p>The transit method detects exoplanets by measuring the dimming of a star as an orbiting planet passes between it and Earth. This method has been extremely successful, especially with NASA's Kepler and TESS missions.</p>
+                                
+                                <h4>Radial Velocity</h4>
+                                <p>Also known as Doppler spectroscopy, this method detects exoplanets by measuring the slight wobble of a star caused by the gravitational pull of an orbiting planet. This was one of the first successful methods for discovering exoplanets.</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h4>Direct Imaging</h4>
+                                <p>This method involves taking pictures of exoplanets by blocking out the light from their host stars and analyzing the light reflected from the planet's atmosphere.</p>
+                                
+                                <h4>Gravitational Microlensing</h4>
+                                <p>This technique detects planets through the gravitational lensing effect they have on light from a distant background star as they pass in front of it.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4 mb-4">
+            <div class="col-12">
+                <a href="/" class="btn btn-primary">
+                    <i data-feather="arrow-left" class="me-1"></i>
+                    Back to Home
+                </a>
+                <a href="/habitable" class="btn btn-success ms-2">
+                    <i data-feather="globe" class="me-1"></i>
+                    Habitable Exoplanets
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Feather Icons
+            feather.replace();
+            
+            // Fetch recent discoveries data
+            fetch('/api/exoplanets/discovered/last-year')
+                .then(response => response.json())
+                .then(discoveriesData => {
+                    // Create visualizations
+                    const visualizationContainer = document.getElementById('visualization-container');
+                    if (visualizationContainer && discoveriesData.length > 0) {
+                        createDiscoveryTimeline(discoveriesData, visualizationContainer);
+                    }
+                    
+                    // Populate table
+                    const tableBody = document.getElementById('discoveries-table');
+                    if (tableBody) {
+                        // Sort discoveries by date (newest first)
+                        const sortedDiscoveries = [...discoveriesData].sort((a, b) => 
+                            new Date(b.discovery_date) - new Date(a.discovery_date));
+                        
+                        sortedDiscoveries.forEach(planet => {
+                            const row = document.createElement('tr');
+                            
+                            // Format the date
+                            const discoveryDate = new Date(planet.discovery_date);
+                            const formattedDate = discoveryDate.toLocaleDateString('en-US', { 
+                                year: 'numeric', 
+                                month: 'long', 
+                                day: 'numeric' 
+                            });
+                            
+                            row.innerHTML = `
+                                <td>${planet.name}</td>
+                                <td>${formattedDate}</td>
+                                <td>${planet.discovery_method}</td>
+                                <td>
+                                    <a href="/exoplanet/${encodeURIComponent(planet.name)}" class="btn btn-sm btn-info">
+                                        <i data-feather="eye" class="feather-sm"></i>
+                                        View
+                                    </a>
+                                </td>
+                            `;
+                            
+                            tableBody.appendChild(row);
+                        });
+                        
+                        // Re-initialize feather icons for the newly added table content
+                        feather.replace();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching discovery timeline data:', error);
+                    const visualizationContainer = document.getElementById('visualization-container');
+                    if (visualizationContainer) {
+                        visualizationContainer.innerHTML = `
+                            <div class="alert alert-danger">
+                                <i data-feather="alert-triangle" class="me-1"></i>
+                                Error loading discovery timeline data. Please try again later.
+                            </div>
+                        `;
+                        feather.replace();
+                    }
+                });
+        });
+    </script>
+</body>
+</html>

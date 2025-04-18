@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AstroSage Dashboard</title>
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <link href="/static/css/custom.css" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <script src="/static/js/plotly_config.js"></script>
+    <script src="/static/js/exoplanet_visualizations.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body data-bs-theme="dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i data-feather="globe" class="me-2"></i>
+                AstroSage
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/habitable">Habitable Exoplanets</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/timeline">Discovery Timeline</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/docs">API Docs</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="py-3 bg-dark text-white">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h1 class="display-4 fw-bold">Exoplanet Discovery Dashboard</h1>
+                    <p class="lead">Comprehensive overview of exoplanet data and visualizations</p>
+                </div>
+                <div class="col-lg-4 text-end">
+                    <div class="d-inline-block bg-info bg-opacity-25 p-3 rounded">
+                        <div class="fs-4 text-center" id="total-planet-count">--</div>
+                        <div class="small text-center">Exoplanets</div>
+                    </div>
+                    <div class="d-inline-block bg-success bg-opacity-25 p-3 rounded ms-2">
+                        <div class="fs-4 text-center" id="habitable-count">--</div>
+                        <div class="small text-center">Habitable</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mt-4">
+        <!-- Dashboard Grid Layout -->
+        <div class="row mb-4">
+            <!-- Left Column - 2/3 width -->
+            <div class="col-lg-8">
+                <!-- Habitability Visualization -->
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3 class="m-0">
+                            <i data-feather="bar-chart-2" class="me-1"></i>
+                            Habitability Overview
+                        </h3>
+                        <a href="/habitable" class="btn btn-sm btn-outline-info">
+                            <i data-feather="external-link" class="feather-sm"></i>
+                            Full View
+                        </a>
+                    </div>
+                    <div class="card-body" id="habitability-visualization">
+                        <!-- Visualization will be loaded here -->
+                        <div class="text-center py-5">
+                            <div class="spinner-border text-info" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Discoveries Timeline -->
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3 class="m-0">
+                            <i data-feather="clock" class="me-1"></i>
+                            Recent Discoveries
+                        </h3>
+                        <a href="/timeline" class="btn btn-sm btn-outline-info">
+                            <i data-feather="external-link" class="feather-sm"></i>
+                            Full View
+                        </a>
+                    </div>
+                    <div class="card-body" id="timeline-visualization">
+                        <!-- Timeline will be loaded here -->
+                        <div class="text-center py-5">
+                            <div class="spinner-border text-info" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - 1/3 width -->
+            <div class="col-lg-4">
+                <!-- Featured Exoplanet Card -->
+                <div class="card mb-4" id="featured-exoplanet-card">
+                    <div class="card-header">
+                        <h3 class="m-0">
+                            <i data-feather="star" class="me-1"></i>
+                            Featured Exoplanet
+                        </h3>
+                    </div>
+                    <div class="card-body text-center" id="featured-exoplanet">
+                        <!-- Content will be loaded here -->
+                        <div class="spinner-border text-info" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top Habitable Exoplanets -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3 class="m-0">
+                            <i data-feather="home" class="me-1"></i>
+                            Top Habitable Worlds
+                        </h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush" id="top-habitable-list">
+                            <!-- List will be populated here -->
+                            <li class="list-group-item text-center py-4">
+                                <div class="spinner-border text-info" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Discovery Methods Summary -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3 class="m-0">
+                            <i data-feather="pie-chart" class="me-1"></i>
+                            Discovery Methods
+                        </h3>
+                    </div>
+                    <div class="card-body" id="discovery-methods-chart">
+                        <!-- Chart will be loaded here -->
+                        <div class="text-center py-5">
+                            <div class="spinner-border text-info" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Filters & Search -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="m-0">
+                            <i data-feather="search" class="me-1"></i>
+                            Exoplanet Search
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" id="search-input" placeholder="Search exoplanets...">
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-select" id="discovery-method-filter">
+                                    <option value="">All Discovery Methods</option>
+                                    <option value="Transit">Transit</option>
+                                    <option value="Radial Velocity">Radial Velocity</option>
+                                    <option value="Direct Imaging">Direct Imaging</option>
+                                    <option value="Gravitational Microlensing">Gravitational Microlensing</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-select" id="habitability-filter">
+                                    <option value="">All Habitability Scores</option>
+                                    <option value="high">High (>0.8)</option>
+                                    <option value="medium">Medium (0.5-0.8)</option>
+                                    <option value="low">Low (<0.5)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 d-grid">
+                                <button class="btn btn-primary" type="button" >
+                                    <i data-feather="filter" class="feather-sm me-1"></i>
+                                    Filter
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mt-3 text-center text-muted">
+                            <small><i data-feather="info" class="feather-sm me-1"></i> Advanced search functionality coming soon</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exoplanet Comparison Tool -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="m-0">
+                            <i data-feather="trending-up" class="me-1"></i>
+                            Exoplanet Comparison Tool
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-5">
+                                <select class="form-select" id="exoplanet1-select">
+                                    <option value="">Select first exoplanet...</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 text-center">
+                                <div class="d-flex align-items-center justify-content-center h-100">
+                                    <i data-feather="arrow-right" style="width: 2rem; height: 2rem;"></i>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <select class="form-select" id="exoplanet2-select">
+                                    <option value="">Select second exoplanet...</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2 col-6 mx-auto">
+                            <button class="btn btn-primary" type="button" id="compare-button">
+                                <i data-feather="refresh-cw" class="me-1"></i>
+                                Compare Exoplanets
+                            </button>
+                        </div>
+                        <div id="comparison-results" class="mt-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="py-4 bg-dark">
+        <div class="container">
+            <p class="m-0 text-center text-white">
+                &copy; 2025 Exoplanet Discovery API
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Feather Icons
+            feather.replace();
+
+            // Featured exoplanet (randomly select one from a curated list)
+            const featuredExoplanets = ["Kepler-186f", "Proxima b", "TOI-700 d", "TRAPPIST-1e"];
+            const randomIndex = Math.floor(Math.random() * featuredExoplanets.length);
+            const featured = featuredExoplanets[randomIndex];
+
+            fetch(`/api/exoplanet/${featured}`)
+                .then(response => response.json())
+                .then(planetData => {
+                    const featuredElement = document.getElementById('featured-exoplanet');
+                    if (featuredElement) {
+                        featuredElement.innerHTML = `
+                            <h3 class="fw-bold mb-3">${planetData.name}</h3>
+                            <p class="mb-1">Discovery: ${planetData.discovery_year || 'Unknown'}</p>
+                            <p class="mb-1">Distance: ${planetData.distance || 'Unknown'} light years</p>
+                            <p class="mb-3">Method: ${planetData.discovery_method || 'Unknown'}</p>
+                            <div class="mb-3">
+                                <div class="fw-bold">Habitability Score</div>
+                                <div class="progress" style="height: 20px;">
+                                    <div class="progress-bar ${getHabitabilityClass(planetData.habitability_score)}" 
+                                         role="progressbar" 
+                                         style="width: ${planetData.habitability_score * 100}%;"
+                                         aria-valuenow="${planetData.habitability_score * 100}" 
+                                         aria-valuemin="0" 
+                                         aria-valuemax="100">
+                                        ${(planetData.habitability_score * 100).toFixed(0)}%
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="/exoplanet/${encodeURIComponent(planetData.name)}" class="btn btn-info">
+                                <i data-feather="eye" class="me-1"></i>
+                                View Details
+                            </a>
+                        `;
+                        // Re-initialize feather icons for the newly added content
+                        feather.replace();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching featured exoplanet:', error);
+                });
+
+            // Load habitable exoplanets data
+            fetch('/api/exoplanets/habitable')
+                .then(response => response.json())
+                .then(exoplanetsData => {
+                    // Update counter
+                    document.getElementById('habitable-count').textContent = exoplanetsData.length;
+                    document.getElementById('total-planet-count').textContent = (exoplanetsData.length * 5).toString(); // Placeholder
+
+                    // Create habitability visualization
+                    const habitabilityContainer = document.getElementById('habitability-visualization');
+                    if (habitabilityContainer && exoplanetsData.length > 0) {
+                        createHabitabilityScatterPlot(exoplanetsData, habitabilityContainer);
+                    }
+
+                    // Populate top habitable worlds list
+                    const topHabitableList = document.getElementById('top-habitable-list');
+                    if (topHabitableList) {
+                        // Sort by habitability score, highest first
+                        const sortedPlanets = [...exoplanetsData].sort((a, b) => 
+                            b.habitability_score - a.habitability_score).slice(0, 5);
+
+                        topHabitableList.innerHTML = '';
+                        sortedPlanets.forEach(planet => {
+                            const listItem = document.createElement('li');
+                            listItem.className = 'list-group-item';
+
+                            listItem.innerHTML = `
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div class="fw-bold">${planet.name}</div>
+                                        <small class="text-muted">${planet.distance ? planet.distance + ' light years' : 'Unknown distance'}</small>
+                                    </div>
+                                    <span class="badge ${getHabitabilityBadgeClass(planet.habitability_score)}">
+                                        ${planet.habitability_score.toFixed(2)}
+                                    </span>
+                                </div>
+                            `;
+
+                            topHabitableList.appendChild(listItem);
+                        });
+                    }
+
+                    // Create discovery methods chart
+                    const methodsData = summarizeDiscoveryMethods(exoplanetsData);
+                    const discoveryMethodsContainer = document.getElementById('discovery-methods-chart');
+                    if (discoveryMethodsContainer) {
+                        createDiscoveryMethodsChart(methodsData, discoveryMethodsContainer);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching habitable exoplanets data:', error);
+                });
+
+            // Load recent discoveries data
+            fetch('/api/exoplanets/discovered/last-year')
+                .then(response => response.json())
+                .then(discoveriesData => {
+                    // Create timeline visualization
+                    const timelineContainer = document.getElementById('timeline-visualization');
+                    if (timelineContainer && discoveriesData.length > 0) {
+                        createDiscoveryTimeline(discoveriesData, timelineContainer);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching discovery timeline data:', error);
+                });
+        });
+
+        // Helper function to get habitability class
+        function getHabitabilityClass(score) {
+            if (score >= 0.7) return 'bg-success';
+            if (score >= 0.4) return 'bg-warning';
+            return 'bg-danger';
+        }
+
+        // Helper function to get habitability badge class
+        function getHabitabilityBadgeClass(score) {
+            if (score >= 0.7) return 'bg-success';
+            if (score >= 0.4) return 'bg-warning';
+            return 'bg-danger';
+        }
+
+        // Summarize discovery methods from a list of exoplanets
+        function summarizeDiscoveryMethods(exoplanets) {
+            // Since this is a simplified version, we'll use placeholder data
+            return [
+                { method: 'Transit', count: 85 },
+                { method: 'Radial Velocity', count: 45 },
+                { method: 'Direct Imaging', count: 12 },
+                { method: 'Gravitational Microlensing', count: 8 }
+            ];
+        }
+
+        // Create a pie chart of discovery methods
+        function createDiscoveryMethodsChart(methodsData, container) {
+            const chartDiv = document.createElement('div');
+            chartDiv.id = 'methods-pie-chart';
+            chartDiv.className = 'plotly-graph';
+            container.innerHTML = '';
+            container.appendChild(chartDiv);
+
+            const labels = methodsData.map(item => item.method);
+            const values = methodsData.map(item => item.count);
+            const colors = ['#3366cc', '#dc3912', '#ff9900', '#109618', '#990099', '#0099c6'];
+
+            const data = [{
+                type: 'pie',
+                labels: labels,
+                values: values,
+                textinfo: 'label+percent',
+                insidetextorientation: 'radial',
+                marker: {
+                    colors: colors
+                }
+            }];
+
+            const layout = {
+                height: 300,
+                margin: { t: 10, b: 10, l: 10, r: 10 },
+                showlegend: false
+            };
+
+            Plotly.newPlot('methods-pie-chart', data, applyDarkTheme(layout), defaultPlotlyConfig);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AstroSage</title>
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <link href="/static/css/custom.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body data-bs-theme="dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i data-feather="globe" class="me-2"></i>
+                AstroSage
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">
+                            <i data-feather="layout" class="feather-sm me-1"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/habitable">Habitable Exoplanets</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/timeline">Discovery Timeline</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/docs">API Docs</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="py-5 bg-dark text-white">
+        <div class="container px-5">
+            <div class="row gx-5 align-items-center justify-content-center">
+                <div class="col-lg-8 col-xl-7 col-xxl-6">
+                    <div class="text-center text-xl-start">
+                        <h1 class="display-4 fw-bold text-white mb-3">AstroSage - Explore the universe. Discover new worlds. Compare the unknown.</h1>
+                        <p class="lead fw-normal text-white-75 mb-4">Explore the universe of exoplanets with detailed data and interactive visualizations.</p>
+                        <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
+                            <a class="btn btn-primary btn-lg px-4 me-sm-3" href="/dashboard">
+                                <i data-feather="layout" class="me-1"></i>
+                                Interactive Dashboard
+                            </a>
+                            <a class="btn btn-success btn-lg px-4 me-sm-3" href="/habitable">
+                                <i data-feather="home" class="me-1"></i>
+                                Habitable Worlds
+                            </a>
+                            <a class="btn btn-outline-light btn-lg px-4" href="/timeline">
+                                <i data-feather="clock" class="me-1"></i>
+                                Recent Discoveries
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-5 col-xxl-6 d-none d-xl-block text-center">
+                    <svg width="400" height="300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+                        <!-- Simple planet and stars SVG -->
+                        <rect width="800" height="600" fill="#121212" />
+                        <circle cx="400" cy="300" r="150" fill="#1a3a6f" stroke="#2a4a7f" stroke-width="10" />
+                        <circle cx="400" cy="300" r="100" fill="#2563eb" stroke="#3b82f6" stroke-width="5" opacity="0.7" />
+                        <circle cx="400" cy="300" r="50" fill="#1e40af" stroke="#3b82f6" stroke-width="3" opacity="0.9" />
+                        <!-- Random stars -->
+                        <circle cx="100" cy="100" r="2" fill="white" />
+                        <circle cx="200" cy="150" r="3" fill="white" />
+                        <circle cx="150" cy="250" r="1" fill="white" />
+                        <circle cx="700" cy="120" r="2" fill="white" />
+                        <circle cx="650" cy="250" r="3" fill="white" />
+                        <circle cx="720" cy="400" r="1" fill="white" />
+                        <circle cx="150" cy="450" r="2" fill="white" />
+                        <circle cx="250" cy="500" r="3" fill="white" />
+                        <circle cx="350" cy="100" r="2" fill="white" />
+                        <circle cx="450" cy="500" r="1" fill="white" />
+                        <circle cx="550" cy="150" r="2" fill="white" />
+                        <circle cx="600" cy="350" r="3" fill="white" />
+                        <!-- Orbiting moon -->
+                        <circle cx="550" cy="300" r="25" fill="#64748b" stroke="#94a3b8" stroke-width="2" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="py-5">
+        <div class="container px-5 my-5">
+            <div class="row gx-5">
+                <div class="col-lg-4 mb-5 mb-lg-0">
+                    <h2 class="fw-bold mb-3">Featured Exoplanets</h2>
+                    <p class="lead">Discover some of the most fascinating exoplanets found to date.</p>
+                </div>
+                <div class="col-lg-8">
+                    <div class="row gx-5 row-cols-1 row-cols-md-2">
+                        <div class="col mb-5 h-100">
+                            <div class="card h-100">
+                                <div class="card-body p-4">
+                                    <div class="text-center">
+                                        <h3 class="fw-bold mb-3">Kepler-186f</h3>
+                                        <p>The first Earth-sized exoplanet found in the habitable zone of another star.</p>
+                                        <span class="badge bg-success mb-3">Habitability Score: 0.95</span>
+                                    </div>
+                                </div>
+                                <div class="card-footer p-3 text-center">
+                                    <a class="btn btn-info btn-sm" href="/exoplanet/Kepler-186f">
+                                        <i data-feather="eye" class="me-1"></i>
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col mb-5 h-100">
+                            <div class="card h-100">
+                                <div class="card-body p-4">
+                                    <div class="text-center">
+                                        <h3 class="fw-bold mb-3">Proxima b</h3>
+                                        <p>The closest known exoplanet to our Solar System, orbiting our nearest stellar neighbor.</p>
+                                        <span class="badge bg-success mb-3">Habitability Score: 0.89</span>
+                                    </div>
+                                </div>
+                                <div class="card-footer p-3 text-center">
+                                    <a class="btn btn-info btn-sm" href="/exoplanet/Proxima b">
+                                        <i data-feather="eye" class="me-1"></i>
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5 bg-light">
+        <div class="container px-5 my-5">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">API Features</h2>
+                <p class="lead mb-0">Explore what you can do with our Exoplanet Discovery API</p>
+            </div>
+            <div class="row gx-5 row-cols-1 row-cols-sm-2 row-cols-xl-4 justify-content-center">
+                <div class="col mb-5">
+                    <div class="card h-100 shadow border-0 api-feature-card">
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <i data-feather="search" class="feature-icon"></i>
+                                <h5 class="fw-bold mb-2">Exoplanet Data</h5>
+                                <p class="mb-0">Get detailed information about exoplanets from the NASA Exoplanet Archive.</p>
+                            </div>
+                        </div>
+                        <div class="card-footer p-3 text-center">
+                            <code class="small">/api/exoplanet/{name}</code>
+                        </div>
+                    </div>
+                </div>
+                <div class="col mb-5">
+                    <div class="card h-100 shadow border-0 api-feature-card">
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <i data-feather="bar-chart-2" class="feature-icon"></i>
+                                <h5 class="fw-bold mb-2">Visualizations</h5>
+                                <p class="mb-0">Interactive visualizations comparing exoplanets to Earth and each other.</p>
+                            </div>
+                        </div>
+                        <div class="card-footer p-3 text-center">
+                            <code class="small">/api/exoplanet/{name}/visualization</code>
+                        </div>
+                    </div>
+                </div>
+                <div class="col mb-5">
+                    <div class="card h-100 shadow border-0 api-feature-card">
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <i data-feather="home" class="feature-icon"></i>
+                                <h5 class="fw-bold mb-2">Habitability Scores</h5>
+                                <p class="mb-0">Discover potentially habitable exoplanets with detailed habitability analysis.</p>
+                            </div>
+                        </div>
+                        <div class="card-footer p-3 text-center">
+                            <code class="small">/api/exoplanets/habitable</code>
+                        </div>
+                    </div>
+                </div>
+                <div class="col mb-5">
+                    <div class="card h-100 shadow border-0 api-feature-card">
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <i data-feather="clock" class="feature-icon"></i>
+                                <h5 class="fw-bold mb-2">Recent Discoveries</h5>
+                                <p class="mb-0">Stay up-to-date with the latest exoplanet discoveries and research.</p>
+                            </div>
+                        </div>
+                        <div class="card-footer p-3 text-center">
+                            <code class="small">/api/exoplanets/discovered/last-year</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5">
+        <div class="container px-5 my-5">
+            <div class="row gx-5 justify-content-center">
+                <div class="col-lg-8 col-xl-6">
+                    <div class="text-center">
+                        <h2 class="fw-bold">API Documentation</h2>
+                        <p class="lead mb-5">Explore our API endpoints and start building with exoplanet data</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row gx-5">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>GET /api/exoplanet/{name}</h4>
+                        </div>
+                        <div class="card-body">
+                            <p>Retrieves detailed information about a specific exoplanet by name.</p>
+                            <h5>Parameters:</h5>
+                            <ul>
+                                <li><code>name</code> - The name of the exoplanet (e.g., "Kepler-186f")</li>
+                            </ul>
+                            <h5>Example Response:</h5>
+                            <pre><code>{
+  "name": "Kepler-186f",
+  "size_comparison": {
+    "earth_radius": 1.2,
+    "earth_temperature": 262,
+    "earth_distance": 500
+  },
+  "discovery_method": "Transit",
+  "orbital_period": "130 days",
+  "distance": 500,
+  "habitability_score": 0.95,
+  "eq_temperature": 262,
+  "discovery_year": 2014
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>GET /api/exoplanets/habitable</h4>
+                        </div>
+                        <div class="card-body">
+                            <p>Returns a list of potentially habitable exoplanets with habitability scores.</p>
+                            <h5>Example Response:</h5>
+                            <pre><code>[
+  {
+    "name": "Kepler-186f",
+    "habitability_score": 0.95,
+    "distance": 500,
+    "earth_radius": 1.2,
+    "eq_temperature": 262
+  },
+  {
+    "name": "Proxima b",
+    "habitability_score": 0.89,
+    "distance": 4.2,
+    "earth_radius": 1.3,
+    "eq_temperature": 278
+  }
+]</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>GET /api/exoplanets/discovered/last-year</h4>
+                        </div>
+                        <div class="card-body">
+                            <p>Returns exoplanets discovered in the last year.</p>
+                            <h5>Example Response:</h5>
+                            <pre><code>[
+  {
+    "name": "Kepler-1647b",
+    "discovery_date": "2024-04-01",
+    "discovery_method": "Transit"
+  },
+  {
+    "name": "Kepler-22b",
+    "discovery_date": "2024-02-14",
+    "discovery_method": "Transit"
+  }
+]</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-4 bg-dark">
+        <div class="container">
+            <p class="m-0 text-center text-white">
+                &copy; 2025 AstroSage
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Feather Icons
+            feather.replace();
+        });
+    </script>
+</body>
+</html>

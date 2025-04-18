@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ exoplanet.name }} - Exoplanet Details</title>
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <link href="/static/css/custom.css" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <script src="/static/js/plotly_config.js"></script>
+    <script src="/static/js/exoplanet_visualizations.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body data-bs-theme="dark">
+    <div class="container mt-4">
+        <header class="planet-detail-header mb-4">
+            <h1 class="display-4">{{ exoplanet.name }}</h1>
+            <p class="lead">
+                <span class="badge bg-info me-2">
+                    <i data-feather="info" class="me-1"></i>
+                    {{ exoplanet.discovery_method }}
+                </span>
+                <span class="badge bg-secondary me-2">
+                    <i data-feather="calendar" class="me-1"></i>
+                    Discovered: {{ exoplanet.discovery_year }}
+                </span>
+                <span class="badge bg-success">
+                    <i data-feather="home" class="me-1"></i>
+                    Habitability Score: <span id="hab-score-badge">{{ exoplanet.habitability_score }}</span>
+                </span>
+            </p>
+        </header>
+
+        <div class="row mb-4">
+            <div class="col-lg-4">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h3>
+                            <i data-feather="globe" class="me-1"></i>
+                            Basic Information
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Name</th>
+                                    <td>{{ exoplanet.name }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Distance from Earth</th>
+                                    <td>{{ exoplanet.distance }} light years</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Discovery Method</th>
+                                    <td>{{ exoplanet.discovery_method }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Discovered</th>
+                                    <td>{{ exoplanet.discovery_year }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Orbital Period</th>
+                                    <td>{{ exoplanet.orbital_period }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Earth Radius Comparison</th>
+                                    <td>{{ exoplanet.size_comparison.earth_radius }} x Earth</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Equilibrium Temperature</th>
+                                    <td>{{ exoplanet.eq_temperature }} K</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Habitability Score</th>
+                                    <td id="hab-score-cell">{{ exoplanet.habitability_score }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-8">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h3>
+                            <i data-feather="bar-chart-2" class="me-1"></i>
+                            Visualizations
+                        </h3>
+                    </div>
+                    <div class="card-body" id="visualization-container">
+                        <!-- Visualizations will be rendered here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>
+                            <i data-feather="info" class="me-1"></i>
+                            Habitability Details
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <p>The habitability score is calculated based on several factors:</p>
+                        <ul>
+                            <li>Distance from host star relative to habitable zone</li>
+                            <li>Planet mass/radius (Earth-like is better)</li>
+                            <li>Host star type (K and G stars are most favorable)</li>
+                            <li>Equilibrium temperature (closer to Earth's average is better)</li>
+                        </ul>
+                        <p>A score closer to 1.0 indicates conditions more similar to Earth and potentially more suitable for life as we know it.</p>
+                        
+                        <div class="alert alert-info mt-3">
+                            <i data-feather="alert-circle" class="me-1"></i>
+                            Note: This habitability assessment is based on our current understanding of what makes a planet potentially habitable. It's a simplified model and actual habitability would depend on many more factors like atmospheric composition, presence of water, geological activity, etc.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4 mb-4">
+            <div class="col-12">
+                <a href="/" class="btn btn-primary">
+                    <i data-feather="arrow-left" class="me-1"></i>
+                    Back to Home
+                </a>
+                <a href="/habitable" class="btn btn-success ms-2">
+                    <i data-feather="list" class="me-1"></i>
+                    View All Habitable Exoplanets
+                </a>
+                <a href="/timeline" class="btn btn-info ms-2">
+                    <i data-feather="clock" class="me-1"></i>
+                    Discovery Timeline
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Feather Icons
+            feather.replace();
+            
+            // Get exoplanet data
+            const exoplanetData = {
+                name: "{{ exoplanet.name }}",
+                size_comparison: {
+                    earth_radius: {{ exoplanet.size_comparison.earth_radius }},
+                    earth_temperature: {{ exoplanet.size_comparison.earth_temperature }},
+                    earth_distance: {{ exoplanet.size_comparison.earth_distance }}
+                },
+                discovery_method: "{{ exoplanet.discovery_method }}",
+                orbital_period: "{{ exoplanet.orbital_period }}",
+                distance: {{ exoplanet.distance }},
+                habitability_score: {{ exoplanet.habitability_score }},
+                eq_temperature: {{ exoplanet.eq_temperature }},
+                discovery_year: {{ exoplanet.discovery_year }}
+            };
+            
+            // Format habitability score with appropriate color class
+            const habitabilityCell = document.getElementById('hab-score-cell');
+            const habitabilityBadge = document.getElementById('hab-score-badge');
+            
+            if (habitabilityCell && habitabilityBadge) {
+                habitabilityCell.innerHTML = formatHabitabilityScore(exoplanetData.habitability_score);
+                habitabilityBadge.innerHTML = exoplanetData.habitability_score.toFixed(2);
+            }
+            
+            // Create visualizations
+            const visualizationContainer = document.getElementById('visualization-container');
+            if (visualizationContainer) {
+                createExoplanetComparison(exoplanetData, visualizationContainer);
+            }
+        });
+    </script>
+</body>
+</html>

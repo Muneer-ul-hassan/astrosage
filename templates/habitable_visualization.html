@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Habitable Exoplanets</title>
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <link href="/static/css/custom.css" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <script src="/static/js/plotly_config.js" defer></script>
+    <script src="/static/js/exoplanet_visualizations.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body data-bs-theme="dark">
+    <div class="container mt-4">
+        <header class="planet-detail-header mb-4">
+            <h1 class="display-4">Potentially Habitable Exoplanets</h1>
+            <p class="lead">Explore worlds that could potentially support life as we know it</p>
+        </header>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>
+                            <i data-feather="bar-chart-2" class="me-1"></i>
+                            Habitability Visualization
+                        </h3>
+                    </div>
+                    <div class="card-body" id="visualization-container">
+                        <div id="loading-indicator" class="text-center p-4">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Loading visualization...</p>
+                        </div>
+                        <!-- Visualizations will be rendered here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>
+                            <i data-feather="list" class="me-1"></i>
+                            Habitable Exoplanets List
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Exoplanet</th>
+                                        <th>Habitability Score</th>
+                                        <th>Distance (Light Years)</th>
+                                        <th>Size (Earth Radius)</th>
+                                        <th>Temperature (K)</th>
+                                        <th>Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="habitable-planets-table">
+                                    <!-- Table rows will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>
+                            <i data-feather="info" class="me-1"></i>
+                            Understanding Habitability
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <p>The habitability score is calculated based on several factors:</p>
+                        <ul>
+                            <li>Distance from host star relative to the habitable zone (the "Goldilocks zone")</li>
+                            <li>Planet mass/radius (Earth-like sizes are more favorable)</li>
+                            <li>Host star type (K and G stars like our Sun are most favorable)</li>
+                            <li>Equilibrium temperature (closer to Earth's average of 288K is better)</li>
+                        </ul>
+
+                        <div class="alert alert-info mt-3">
+                            <i data-feather="alert-circle" class="me-1"></i>
+                            Note: This habitability assessment is based on our current understanding of what makes a planet potentially habitable. It's a simplified model and actual habitability would depend on many more factors including atmospheric composition, presence of liquid water, geological activity, and more.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4 mb-4">
+            <div class="col-12">
+                <a href="/" class="btn btn-primary">
+                    <i data-feather="arrow-left" class="me-1"></i>
+                    Back to Home
+                </a>
+                <a href="/timeline" class="btn btn-info ms-2">
+                    <i data-feather="clock" class="me-1"></i>
+                    Discovery Timeline
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Feather Icons
+            feather.replace();
+
+            // Fetch habitable exoplanets data
+            fetch('/api/exoplanets/habitable')
+                .then(response => response.json())
+                .then(exoplanetsData => {
+                    // Create visualizations
+                    const visualizationContainer = document.getElementById('visualization-container');
+                    if (visualizationContainer && exoplanetsData.length > 0) {
+                        createHabitabilityScatterPlot(exoplanetsData, visualizationContainer);
+                    }
+
+                    // Populate table
+                    const tableBody = document.getElementById('habitable-planets-table');
+                    if (tableBody) {
+                        exoplanetsData.forEach(planet => {
+                            const row = document.createElement('tr');
+
+                            row.innerHTML = `
+                                <td>${planet.name}</td>
+                                <td>${formatHabitabilityScore(planet.habitability_score)}</td>
+                                <td>${planet.distance || 'Unknown'}</td>
+                                <td>${planet.earth_radius || 'Unknown'}</td>
+                                <td>${planet.eq_temperature || 'Unknown'}</td>
+                                <td>
+                                    <a href="/exoplanet/${encodeURIComponent(planet.name)}" class="btn btn-sm btn-info">
+                                        <i data-feather="eye" class="feather-sm"></i>
+                                        View
+                                    </a>
+                                </td>
+                            `;
+
+                            tableBody.appendChild(row);
+                        });
+
+                        // Re-initialize feather icons for the newly added table content
+                        feather.replace();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching habitable exoplanets data:', error);
+                    const visualizationContainer = document.getElementById('visualization-container');
+                    if (visualizationContainer) {
+                        visualizationContainer.innerHTML = `
+                            <div class="alert alert-danger">
+                                <i data-feather="alert-triangle" class="me-1"></i>
+                                Error loading habitable exoplanets data. Please try again later.
+                            </div>
+                        `;
+                        feather.replace();
+                    }
+                });
+        });
+    </script>
+</body>
+</html>

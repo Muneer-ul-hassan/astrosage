@@ -1,0 +1,138 @@
+/* Custom styles for the Exoplanet Discovery API */
+
+/* Global text color */
+body, p, h1, h2, h3, h4, h5, h6, .card-body, .card-header, .nav-link, 
+.lead, small, span, div, td, th, li, code, pre {
+    color: #ffffff !important;
+}
+
+/* Preserve specific color classes */
+.habitability-high {
+    color: #48bb78 !important;
+}
+
+.habitability-medium {
+    color: #ecc94b !important;
+}
+
+.habitability-low {
+    color: #f56565 !important;
+}
+
+/* Add some padding to all Plotly graph containers */
+.plotly-graph {
+    padding: 15px;
+    margin-bottom: 20px;
+    min-height: 400px;
+}
+
+/* Style for the exoplanet detail header */
+.planet-detail-header {
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--bs-border-color);
+}
+
+/* Style for habitability score */
+.habitability-high {
+    color: #48bb78;
+    font-weight: bold;
+}
+
+.habitability-medium {
+    color: #ecc94b;
+    font-weight: bold;
+}
+
+.habitability-low {
+    color: #f56565;
+    font-weight: bold;
+}
+
+/* Table styles for better readability */
+.table {
+    color: #fff; /* White text for all tables */
+}
+
+.table-striped tbody tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.table-striped tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.2);
+}
+
+/* Table header styles */
+.table thead th {
+    color: #e9ecef;
+    font-weight: bold;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Table cell padding */
+.table td, .table th {
+    padding: 12px 15px;
+}
+
+/* Make small feather icons for table buttons */
+.feather-sm {
+    width: 1em;
+    height: 1em;
+}
+
+/* Custom card styles */
+.card {
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+.card-header {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+/* Visualization container min height */
+#visualization-container {
+    min-height: 500px;
+}
+
+/* Home page styles */
+.api-feature-card {
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.api-feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Feature icon styles */
+.feature-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 15px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .plotly-graph {
+        min-height: 300px;
+    }
+
+    #visualization-container {
+        min-height: 350px;
+    }
+}
+
+/* Added to make alert boxes black */
+.alert {
+    background-color: #000000;
+    border-color: #000000;
+    color: #ffffff;
+}
